@@ -1,0 +1,48 @@
+@model SubmissionResultViewModel
+@{
+    ViewData["Title"] = "Result";
+    var submission = Model.Submission;
+}
+
+<section class="result-layout">
+    <section class="score-panel">
+        <p class="eyebrow">@submission.Topic?.TaskType result</p>
+        <h1>Overall @submission.OverallScore</h1>
+        <div class="score-grid">
+            <div><span>Task Achievement</span><strong>@submission.TaskAchievement</strong></div>
+            <div><span>Coherence</span><strong>@submission.CoherenceCohesion</strong></div>
+            <div><span>Lexical</span><strong>@submission.LexicalResource</strong></div>
+            <div><span>Grammar</span><strong>@submission.GrammarRangeAccuracy</strong></div>
+        </div>
+        <h2>Feedback</h2>
+        <p>@submission.Feedback</p>
+    </section>
+
+    <section class="chat-panel">
+        <h2>Tutor chat</h2>
+        <div class="chat-log">
+            @if (Model.ChatMessages.Count == 0)
+            {
+                <p class="muted">Ask how to improve your introduction, vocabulary, grammar, or structure.</p>
+            }
+            @foreach (var message in Model.ChatMessages)
+            {
+                <div class="chat-message @message.Role">
+                    <strong>@message.Role</strong>
+                    <p>@message.Message</p>
+                </div>
+            }
+        </div>
+        <form asp-controller="Chat" asp-action="Send" method="post" class="chat-form">
+            <input type="hidden" name="submissionId" value="@submission.Id" />
+            <input name="message" maxlength="1000" placeholder="Ask for a rewrite or improvement..." />
+            <button class="primary" type="submit">Send</button>
+        </form>
+    </section>
+</section>
+
+<section class="essay-review">
+    <h2>Essay</h2>
+    <p class="muted">@submission.WordCount words</p>
+    <pre>@submission.EssayText</pre>
+</section>

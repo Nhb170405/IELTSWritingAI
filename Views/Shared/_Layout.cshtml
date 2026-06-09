@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - IELTS Writing AI</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" asp-controller="Writing" asp-action="Index">IELTS Writing AI</a>
+        <nav>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Writing" asp-action="Practice" asp-route-taskType="Task1">Task 1</a>
+                <a asp-controller="Writing" asp-action="Practice" asp-route-taskType="Task2">Task 2</a>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="inline-form">
+                    <button type="submit">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login">Login</a>
+                <a asp-controller="Account" asp-action="Register">Register</a>
+            }
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        @RenderBody()
+    </main>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
